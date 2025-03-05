@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-producer-deepansh
+  namespace: firehose
+spec:
+  replicas: 1  # Adjust as needed
+  selector:
+    matchLabels:
+      app: kafka-producer-deepansh
+  template:
+    metadata:
+      labels:
+        app: kafka-producer-deepansh
+    spec:
+      containers:
+        - name: kafka-producer
+          image: dgoyalgojek/demoproject1:latest  # Replace with your Docker Hub image
+          imagePullPolicy: Always
+          env:
+            - name: KAFKA_BROKER
+              value: "kafka-broker-service:9092"  # Adjust based on your Kafka setup
+            - name: KAFKA_TOPIC
+              value: "test-topic"
+            - name: MESSAGE_INTERVAL
+              value: "1000"

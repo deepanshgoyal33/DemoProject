@@ -35,6 +35,8 @@ tasks.jar {
     manifest {
         attributes["Main-Class"] = application.mainClass.get()
     }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Add this line
 }
 
 // Use Shadow Plugin to Create a Fat JAR
@@ -42,7 +44,7 @@ tasks.shadowJar {
     archiveBaseName.set("kafka-producer")
     archiveClassifier.set("") // No "-all" suffix, keeps it simple
     archiveVersion.set("") // Removes version from final jar name
-
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes["Main-Class"] = application.mainClass.get()
     }
